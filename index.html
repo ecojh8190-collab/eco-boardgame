@@ -203,9 +203,9 @@
   </div>
 
   <header>
-    <div class="eyebrow">환경아카이브 풀숲 · 프로토타입 v0.4</div>
+    <div class="eyebrow">환경아카이브 풀숲 · 프로토타입 v0.5</div>
     <h1>이건 무슨 이야기일까</h1>
-    <p class="lede">실제 소장자료 속 단체와 역사적 사건을 힌트로, 무엇에 대한 이야기인지 맞혀 보세요.<br>8문제, 정답을 맞힐수록 연속 보너스가 붙습니다.</p>
+    <p class="lede">실제 소장자료 속 단체·사건·인물을 힌트로, 무엇에 대한 이야기인지 맞혀 보세요.<br>8문제, 정답을 맞힐수록 연속 보너스가 붙습니다.</p>
   </header>
 
   <div class="legend" id="legend"></div>
@@ -306,7 +306,19 @@
     { type: "event", name: "굴업도핵폐기장반대", clue: "1994년 언론 보도로 알려진, 서해의 한 섬에 핵폐기장을 건설하려던 정부 계획을 둘러싼 논쟁은?", subject: "반핵탈핵", year: "1994–1995", n: "129건", org: "환경운동연합" },
     { type: "event", name: "고리1호기 폐쇄", clue: "1978년 가동을 시작한 국내에서 가장 오래된 핵발전소가 2007년 수명연장되며 불거진, 운동의 이름은?", subject: "반핵탈핵", year: "2007–2017", n: "147건", org: "환경운동연합" }
   ];
-  var pool = orgs.concat(events);
+
+  // 실제 collections.json 속 개인 기증자(개인 8명) — 소개글을 각색한 단서 포함
+  var people = [
+    { type: "person", name: "장재연", clue: "현재 숲과나눔 이사장이자 아주대학교 명예교수로, 1985년 온산병 대책위원회 활동을 시작으로 환경운동에 참여해 온 인물은?", subject: "반공해", n: "968건", total: "8,513건", years: "1935–2021" },
+    { type: "person", name: "정태석", clue: "전북대학교 사범대학 교수로, 2003년 전북 부안 핵폐기장 반대 운동 당시의 성명서·홍보물·회의자료를 기증한 인물은?", subject: "반핵탈핵", n: "172건", total: "1,300건", years: "2003년" },
+    { type: "person", name: "김호철", clue: "환경운동연합 공동대표이자 변호사로, 새만금사업 관련 보고서와 소송 자료를 기증한 인물은?", subject: "생태계보전", n: "146건", total: "355건", years: "1981–2021" },
+    { type: "person", name: "서진옥", clue: "환경운동연합의 전신인 '공해추방운동연합' 초대 공동의장으로, 1988년 창립행사 초청장 등을 기증한 인물은?", subject: "반공해", n: "265건", total: "273건", years: "1986–2005" },
+    { type: "person", name: "구도완", clue: "환경사회연구소 소장이자 한국환경사회학회 회장을 지내며, 환경운동사를 연구해 온 인물은?", subject: "반공해", n: "24건", total: "99건", years: "1978–2016" },
+    { type: "person", name: "이상돈", clue: "20대 국회의원이자 중앙대 법과대학 명예교수로, 해양오염의 법적 문제를 박사학위 논문 주제로 연구한 인물은?", subject: "생태계보전", n: "8건", total: "13건", years: "2016–2020" },
+    { type: "person", name: "김현구", clue: "생명과학을 공부하던 대학생으로, 오래 수집해 온 곤충기·식물도감 같은 고서적을 기증한 인물은?", subject: "생태계보전", n: "6건", total: "6건", years: "1948–1960" },
+    { type: "person", name: "윤제용", clue: "서울대 공과대 교수로, 국경없는 과학기술자회 회장을 지낸 환경공학자는?", subject: "반공해", n: "3건", total: "5건", years: "2002–2009" }
+  ];
+  var pool = orgs.concat(events).concat(people);
 
   // 주제(subject) 8종 → 아이콘 (단색 잉크 톤, 카드 뒷면 스탬프 느낌)
   var subjectIcon = {
@@ -390,7 +402,9 @@
     clueText.textContent = q.org.clue;
     qN.textContent = (state.idx + 1) + " / " + ROUND;
     tagLabel.textContent = q.org.subject;
-    kindLabel.textContent = q.org.type === "event" ? "역사 속 단서 · 어떤 사건일까" : "기록 속 단서 · 어느 단체일까";
+    kindLabel.textContent = q.org.type === "event" ? "역사 속 단서 · 어떤 사건일까"
+      : q.org.type === "person" ? "인물 속 단서 · 누구일까"
+      : "기록 속 단서 · 어느 단체일까";
     renderDots();
     optionsEl.innerHTML = "";
     q.choices.forEach(function (name) {
