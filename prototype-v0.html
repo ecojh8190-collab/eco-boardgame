@@ -149,6 +149,7 @@
   .reveal .badge svg { width: 16px; height: 16px; }
   .reveal .text { font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); }
   .reveal .text b { color: var(--ink); font-size: 13.5px; font-family: "Jua", sans-serif; font-weight: 400; }
+  .reveal .text a { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
 
   .next {
     margin-top: 14px; width: 100%; font-family: "Jua", sans-serif; font-size: 15px;
@@ -275,48 +276,48 @@
 (function () {
   // 실제 collections.json에서 추출한 단체 정보 (이름을 직접 언급하지 않도록 각색한 단서 포함)
   var orgs = [
-    { type: "org", name: "환경운동연합", clue: "1987년 6월 항쟁 이후 힘을 얻은 지역 공해추방운동 조직들이 1993년 전국 8개 단체로 통합해 만든, 국내 최대 규모의 전국 단위 환경단체는?", subject: "반핵탈핵", n: "3,861건", total: "18,204건", years: "1955–2024" },
-    { type: "org", name: "녹색연합", clue: "1991년 창립해 백두대간과 DMZ 보전, 야생동물 서식지 보호에 주력해 온 환경단체는?", subject: "생태계보전", n: "2,667건", total: "10,374건", years: "1971–2024" },
-    { type: "org", name: "한겨레", clue: "1988년 창간 초기부터 환경 문제를 주요 의제로 다뤄 왔고, 2020년 국내 언론 최초로 '기후변화팀'을 신설한 곳은?", subject: "반공해", n: "994건", total: "9,464건", years: "1988–1999" },
-    { type: "org", name: "생명의숲", clue: "1998년 '숲 가꾸기 운동'으로 시작해 도시숲·학교숲 운동으로 활동 영역을 넓혀 온 단체는?", subject: "생태계보전", n: "4,995건", total: "7,070건", years: "1966–2024" },
-    { type: "org", name: "녹색교통", clue: "1992년 운수노동활동가들이 꾸린 '교통환경연구소'가 뿌리이며, 시민의 교통권과 대기오염 문제를 함께 다루는 단체는?", subject: "일반", n: "1,591건", total: "6,945건", years: "1967–2023" },
-    { type: "org", name: "생태보전시민모임", clue: "'공생·다양성·연대·참여'를 핵심가치로 1998년 창립해 도시생태계 보전과 생태교육 활동을 해 온 단체는?", subject: "생태계보전", n: "3,223건", total: "5,473건", years: "1971–2023" },
-    { type: "org", name: "국립공원을지키는시민의모임", clue: "국립공원의 자연생태계와 경관을 지키기 위해 자연공원법 개정운동을 벌여 온 단체는?", subject: "생태계보전", n: "2,465건", total: "4,062건", years: "1963–2022" },
-    { type: "org", name: "여성환경연대", clue: "1999년 창립한 국내 유일의 여성환경운동 단체로, 여성건강·에코젠더 같은 주제로 활동하는 곳은?", subject: "생활안전", n: "539건", total: "2,804건", years: "1993–2024" },
-    { type: "org", name: "불교환경연대", clue: "생명존중의 가르침을 바탕으로 2001년 창립해 자연환경과 생명살림을 위한 활동을 펼쳐 온 단체는?", subject: "생태계보전", n: "1,233건", total: "2,793건", years: "1999–2023" },
-    { type: "org", name: "더나은미래", clue: "언론사의 공익섹션에서 출발해 2010년 설립된, 공익 저널리즘과 컨설팅을 함께 하는 단체는?", subject: "기후에너지", n: "462건", total: "2,744건", years: "2010–2023" },
-    { type: "org", name: "숲과나눔", clue: "'환경아카이브 풀숲'을 직접 구축하고 운영해 온, 2018년 설립된 재단은?", subject: "기후에너지", n: "444건", total: "2,522건", years: "2018–2025" },
-    { type: "org", name: "기독교환경운동연대", clue: "1982년 '한국공해문제연구소'로 출발했다가, 1997년 기독교 신앙을 바탕으로 조직을 개편한 단체는?", subject: "반핵탈핵", n: "228건", total: "3,824건", years: "1982–2023" },
-    { type: "org", name: "환경정의", clue: "1992년 리우 유엔환경회의를 계기로 경실련 산하 기구로 출발했다가, 2004년 지금의 이름으로 바꾼 단체는?", subject: "생활안전", n: "286건", total: "3,217건", years: "1966–2023" },
-    { type: "org", name: "수원환경운동센터", clue: "1994년, 수원 지역 시민·사회단체들의 연대로 결성되어 지역 환경문제 해결에 집중해 온 단체는?", subject: "생태계보전", n: "551건", total: "1,631건", years: "1988–2020" }
+    { type: "org", name: "환경운동연합", clue: "1987년 6월 항쟁 이후 힘을 얻은 지역 공해추방운동 조직들이 1993년 전국 8개 단체로 통합해 만든, 국내 최대 규모의 전국 단위 환경단체는?", subject: "반핵탈핵", n: "3,861건", total: "18,204건", years: "1955–2024", url: "https://ecoarchive.org/collections/show/id/34" },
+    { type: "org", name: "녹색연합", clue: "1991년 창립해 백두대간과 DMZ 보전, 야생동물 서식지 보호에 주력해 온 환경단체는?", subject: "생태계보전", n: "2,667건", total: "10,374건", years: "1971–2024", url: "https://ecoarchive.org/collections/show/id/30" },
+    { type: "org", name: "한겨레", clue: "1988년 창간 초기부터 환경 문제를 주요 의제로 다뤄 왔고, 2020년 국내 언론 최초로 '기후변화팀'을 신설한 곳은?", subject: "반공해", n: "994건", total: "9,464건", years: "1988–1999", url: "https://ecoarchive.org/collections/show/id/55" },
+    { type: "org", name: "생명의숲", clue: "1998년 '숲 가꾸기 운동'으로 시작해 도시숲·학교숲 운동으로 활동 영역을 넓혀 온 단체는?", subject: "생태계보전", n: "4,995건", total: "7,070건", years: "1966–2024", url: "https://ecoarchive.org/collections/show/id/52" },
+    { type: "org", name: "녹색교통", clue: "1992년 운수노동활동가들이 꾸린 '교통환경연구소'가 뿌리이며, 시민의 교통권과 대기오염 문제를 함께 다루는 단체는?", subject: "일반", n: "1,591건", total: "6,945건", years: "1967–2023", url: "https://ecoarchive.org/collections/show/id/36" },
+    { type: "org", name: "생태보전시민모임", clue: "'공생·다양성·연대·참여'를 핵심가치로 1998년 창립해 도시생태계 보전과 생태교육 활동을 해 온 단체는?", subject: "생태계보전", n: "3,223건", total: "5,473건", years: "1971–2023", url: "https://ecoarchive.org/collections/show/id/44" },
+    { type: "org", name: "국립공원을지키는시민의모임", clue: "국립공원의 자연생태계와 경관을 지키기 위해 자연공원법 개정운동을 벌여 온 단체는?", subject: "생태계보전", n: "2,465건", total: "4,062건", years: "1963–2022", url: "https://ecoarchive.org/collections/show/id/38" },
+    { type: "org", name: "여성환경연대", clue: "1999년 창립한 국내 유일의 여성환경운동 단체로, 여성건강·에코젠더 같은 주제로 활동하는 곳은?", subject: "생활안전", n: "539건", total: "2,804건", years: "1993–2024", url: "https://ecoarchive.org/collections/show/id/32" },
+    { type: "org", name: "불교환경연대", clue: "생명존중의 가르침을 바탕으로 2001년 창립해 자연환경과 생명살림을 위한 활동을 펼쳐 온 단체는?", subject: "생태계보전", n: "1,233건", total: "2,793건", years: "1999–2023", url: "https://ecoarchive.org/collections/show/id/40" },
+    { type: "org", name: "더나은미래", clue: "언론사의 공익섹션에서 출발해 2010년 설립된, 공익 저널리즘과 컨설팅을 함께 하는 단체는?", subject: "기후에너지", n: "462건", total: "2,744건", years: "2010–2023", url: "https://ecoarchive.org/collections/show/id/47" },
+    { type: "org", name: "숲과나눔", clue: "'환경아카이브 풀숲'을 직접 구축하고 운영해 온, 2018년 설립된 재단은?", subject: "기후에너지", n: "444건", total: "2,522건", years: "2018–2025", url: "https://ecoarchive.org/collections/show/id/31" },
+    { type: "org", name: "기독교환경운동연대", clue: "1982년 '한국공해문제연구소'로 출발했다가, 1997년 기독교 신앙을 바탕으로 조직을 개편한 단체는?", subject: "반핵탈핵", n: "228건", total: "3,824건", years: "1982–2023", url: "https://ecoarchive.org/collections/show/id/42" },
+    { type: "org", name: "환경정의", clue: "1992년 리우 유엔환경회의를 계기로 경실련 산하 기구로 출발했다가, 2004년 지금의 이름으로 바꾼 단체는?", subject: "생활안전", n: "286건", total: "3,217건", years: "1966–2023", url: "https://ecoarchive.org/collections/show/id/35" },
+    { type: "org", name: "수원환경운동센터", clue: "1994년, 수원 지역 시민·사회단체들의 연대로 결성되어 지역 환경문제 해결에 집중해 온 단체는?", subject: "생태계보전", n: "551건", total: "1,631건", years: "1988–2020", url: "https://ecoarchive.org/collections/show/id/37" }
   ];
 
   // 실제 timeline.json 사건(events) 47건 중 12건 — 설명을 각색한 단서 포함
   var events = [
-    { type: "event", name: "낙동강 페놀 유출 사건", clue: "1991년, 구미의 한 공장에서 두 차례에 걸쳐 유해물질이 낙동강으로 흘러들어 대구 지역 수돗물에서 악취가 났던 사건은?", subject: "반공해", year: "1991년", n: "65건", org: "한겨레" },
-    { type: "event", name: "새만금 간척사업 백지화", clue: "1987년 대선 공약으로 시작돼, 여의도 면적의 140배에 달하는 서해 갯벌을 매립하려 한 간척사업을 둘러싼 오랜 논쟁은?", subject: "생태계보전", year: "1987년~", n: "1,148건", org: "불교환경연대" },
-    { type: "event", name: "4대강반대", clue: "2008년 대선 공약이던 한반도 대운하 구상이 2009년 녹색뉴딜 사업으로 다시 등장하며, 전국 주요 하천 공사를 둘러싸고 벌어진 논쟁은?", subject: "생태계보전", year: "2006년~", n: "984건", org: "환경운동연합" },
-    { type: "event", name: "후쿠시마 핵발전소 폭발 사고", clue: "2011년 3월 동일본 대지진 쓰나미로 발생해, 체르노빌과 함께 국제원자력사고등급 최고 단계를 기록한 사고는?", subject: "반핵탈핵", year: "2011년", n: "359건", org: "환경운동연합" },
-    { type: "event", name: "가습기살균제 참사", clue: "2011년, 원인 모를 폐질환으로 임산부들이 잇달아 입원하며 드러난, 실내 공기용 제품으로 인한 대규모 건강 피해 사건은?", subject: "생활안전", year: "2011년~", n: "145건", org: "환경운동연합" },
-    { type: "event", name: "밀양송전탑반대", clue: "신고리 핵발전소 전력을 수도권으로 보내는 초고압 송전선로 건설에 맞서, 주민들이 공사현장에 농성장을 짓고 몸으로 막아선 사건은?", subject: "기후에너지", year: "2005–2014", n: "70건", org: "환경운동연합" },
-    { type: "event", name: "시화호 수질오염 대응", clue: "1994년 완공된 방조제 이후, 최첨단 기술로 수질을 개선하겠다던 정부 장담과 달리 주변 산업단지로 오염이 갈수록 심해진 사건은?", subject: "생태계보전", year: "1993–2001", n: "60건", org: "한겨레" },
-    { type: "event", name: "천성산 터널공사 반대", clue: "경부고속철도 터널 구간을 두고, 일대 12개 사찰 승려들이 수행환경 저해와 자연 파괴 문제를 제기하며 벌어진 논쟁은?", subject: "생태계보전", year: "2000–2006", n: "145건", org: "불교환경연대" },
-    { type: "event", name: "미국산 광우병 쇠고기 수입 반대", clue: "2008년, 뼈 있는 부위까지 수입을 허용하는 한미 협상 타결 소식에 국민 여론이 들끓으며 대규모 집회로 번진 사건은?", subject: "생활안전", year: "2008년", n: "59건", org: "환경정의" },
-    { type: "event", name: "매향리미군사격장폐쇄", clue: "54년간 한 마을 상공에서 하루 수백 회 사격훈련이 계속되며, 주민들이 소음 피해와 오폭 사고를 겪었던 미군 훈련장을 둘러싼 사건은?", subject: "생태계보전", year: "1988–2015", n: "178건", org: "녹색연합" },
-    { type: "event", name: "굴업도핵폐기장반대", clue: "1994년 언론 보도로 알려진, 서해의 한 섬에 핵폐기장을 건설하려던 정부 계획을 둘러싼 논쟁은?", subject: "반핵탈핵", year: "1994–1995", n: "129건", org: "환경운동연합" },
-    { type: "event", name: "고리1호기 폐쇄", clue: "1978년 가동을 시작한 국내에서 가장 오래된 핵발전소가 2007년 수명연장되며 불거진, 운동의 이름은?", subject: "반핵탈핵", year: "2007–2017", n: "147건", org: "환경운동연합" }
+    { type: "event", name: "낙동강 페놀 유출 사건", clue: "1991년, 구미의 한 공장에서 두 차례에 걸쳐 유해물질이 낙동강으로 흘러들어 대구 지역 수돗물에서 악취가 났던 사건은?", subject: "반공해", year: "1991년", n: "65건", org: "한겨레", url: "https://ecoarchive.org/items/show/1133" },
+    { type: "event", name: "새만금 간척사업 백지화", clue: "1987년 대선 공약으로 시작돼, 여의도 면적의 140배에 달하는 서해 갯벌을 매립하려 한 간척사업을 둘러싼 오랜 논쟁은?", subject: "생태계보전", year: "1987년~", n: "1,148건", org: "불교환경연대", url: "https://ecoarchive.org/items/show/1145" },
+    { type: "event", name: "4대강반대", clue: "2008년 대선 공약이던 한반도 대운하 구상이 2009년 녹색뉴딜 사업으로 다시 등장하며, 전국 주요 하천 공사를 둘러싸고 벌어진 논쟁은?", subject: "생태계보전", year: "2006년~", n: "984건", org: "환경운동연합", url: "https://ecoarchive.org/items/show/1155" },
+    { type: "event", name: "후쿠시마 핵발전소 폭발 사고", clue: "2011년 3월 동일본 대지진 쓰나미로 발생해, 체르노빌과 함께 국제원자력사고등급 최고 단계를 기록한 사고는?", subject: "반핵탈핵", year: "2011년", n: "359건", org: "환경운동연합", url: "https://ecoarchive.org/items/show/1168" },
+    { type: "event", name: "가습기살균제 참사", clue: "2011년, 원인 모를 폐질환으로 임산부들이 잇달아 입원하며 드러난, 실내 공기용 제품으로 인한 대규모 건강 피해 사건은?", subject: "생활안전", year: "2011년~", n: "145건", org: "환경운동연합", url: "https://ecoarchive.org/items/show/1160" },
+    { type: "event", name: "밀양송전탑반대", clue: "신고리 핵발전소 전력을 수도권으로 보내는 초고압 송전선로 건설에 맞서, 주민들이 공사현장에 농성장을 짓고 몸으로 막아선 사건은?", subject: "기후에너지", year: "2005–2014", n: "70건", org: "환경운동연합", url: "https://ecoarchive.org/items/show/1157" },
+    { type: "event", name: "시화호 수질오염 대응", clue: "1994년 완공된 방조제 이후, 최첨단 기술로 수질을 개선하겠다던 정부 장담과 달리 주변 산업단지로 오염이 갈수록 심해진 사건은?", subject: "생태계보전", year: "1993–2001", n: "60건", org: "한겨레", url: "https://ecoarchive.org/items/show/1141" },
+    { type: "event", name: "천성산 터널공사 반대", clue: "경부고속철도 터널 구간을 두고, 일대 12개 사찰 승려들이 수행환경 저해와 자연 파괴 문제를 제기하며 벌어진 논쟁은?", subject: "생태계보전", year: "2000–2006", n: "145건", org: "불교환경연대", url: "https://ecoarchive.org/items/show/1149" },
+    { type: "event", name: "미국산 광우병 쇠고기 수입 반대", clue: "2008년, 뼈 있는 부위까지 수입을 허용하는 한미 협상 타결 소식에 국민 여론이 들끓으며 대규모 집회로 번진 사건은?", subject: "생활안전", year: "2008년", n: "59건", org: "환경정의", url: "https://ecoarchive.org/items/show/1158" },
+    { type: "event", name: "매향리미군사격장폐쇄", clue: "54년간 한 마을 상공에서 하루 수백 회 사격훈련이 계속되며, 주민들이 소음 피해와 오폭 사고를 겪었던 미군 훈련장을 둘러싼 사건은?", subject: "생태계보전", year: "1988–2015", n: "178건", org: "녹색연합", url: "https://ecoarchive.org/items/show/1148" },
+    { type: "event", name: "굴업도핵폐기장반대", clue: "1994년 언론 보도로 알려진, 서해의 한 섬에 핵폐기장을 건설하려던 정부 계획을 둘러싼 논쟁은?", subject: "반핵탈핵", year: "1994–1995", n: "129건", org: "환경운동연합", url: "https://ecoarchive.org/items/show/1138" },
+    { type: "event", name: "고리1호기 폐쇄", clue: "1978년 가동을 시작한 국내에서 가장 오래된 핵발전소가 2007년 수명연장되며 불거진, 운동의 이름은?", subject: "반핵탈핵", year: "2007–2017", n: "147건", org: "환경운동연합", url: "https://ecoarchive.org/items/show/1171" }
   ];
 
   // 실제 collections.json 속 개인 기증자(개인 8명) — 소개글을 각색한 단서 포함
   var people = [
-    { type: "person", name: "장재연", clue: "현재 숲과나눔 이사장이자 아주대학교 명예교수로, 1985년 온산병 대책위원회 활동을 시작으로 환경운동에 참여해 온 인물은?", subject: "반공해", n: "968건", total: "8,513건", years: "1935–2021" },
-    { type: "person", name: "정태석", clue: "전북대학교 사범대학 교수로, 2003년 전북 부안 핵폐기장 반대 운동 당시의 성명서·홍보물·회의자료를 기증한 인물은?", subject: "반핵탈핵", n: "172건", total: "1,300건", years: "2003년" },
-    { type: "person", name: "김호철", clue: "환경운동연합 공동대표이자 변호사로, 새만금사업 관련 보고서와 소송 자료를 기증한 인물은?", subject: "생태계보전", n: "146건", total: "355건", years: "1981–2021" },
-    { type: "person", name: "서진옥", clue: "환경운동연합의 전신인 '공해추방운동연합' 초대 공동의장으로, 1988년 창립행사 초청장 등을 기증한 인물은?", subject: "반공해", n: "265건", total: "273건", years: "1986–2005" },
-    { type: "person", name: "구도완", clue: "환경사회연구소 소장이자 한국환경사회학회 회장을 지내며, 환경운동사를 연구해 온 인물은?", subject: "반공해", n: "24건", total: "99건", years: "1978–2016" },
-    { type: "person", name: "이상돈", clue: "20대 국회의원이자 중앙대 법과대학 명예교수로, 해양오염의 법적 문제를 박사학위 논문 주제로 연구한 인물은?", subject: "생태계보전", n: "8건", total: "13건", years: "2016–2020" },
-    { type: "person", name: "김현구", clue: "생명과학을 공부하던 대학생으로, 오래 수집해 온 곤충기·식물도감 같은 고서적을 기증한 인물은?", subject: "생태계보전", n: "6건", total: "6건", years: "1948–1960" },
-    { type: "person", name: "윤제용", clue: "서울대 공과대 교수로, 국경없는 과학기술자회 회장을 지낸 환경공학자는?", subject: "반공해", n: "3건", total: "5건", years: "2002–2009" }
+    { type: "person", name: "장재연", clue: "현재 숲과나눔 이사장이자 아주대학교 명예교수로, 1985년 온산병 대책위원회 활동을 시작으로 환경운동에 참여해 온 인물은?", subject: "반공해", n: "968건", total: "8,513건", years: "1935–2021", url: "https://ecoarchive.org/collections/show/id/24" },
+    { type: "person", name: "정태석", clue: "전북대학교 사범대학 교수로, 2003년 전북 부안 핵폐기장 반대 운동 당시의 성명서·홍보물·회의자료를 기증한 인물은?", subject: "반핵탈핵", n: "172건", total: "1,300건", years: "2003년", url: "https://ecoarchive.org/collections/show/id/54" },
+    { type: "person", name: "김호철", clue: "환경운동연합 공동대표이자 변호사로, 새만금사업 관련 보고서와 소송 자료를 기증한 인물은?", subject: "생태계보전", n: "146건", total: "355건", years: "1981–2021", url: "https://ecoarchive.org/collections/show/id/26" },
+    { type: "person", name: "서진옥", clue: "환경운동연합의 전신인 '공해추방운동연합' 초대 공동의장으로, 1988년 창립행사 초청장 등을 기증한 인물은?", subject: "반공해", n: "265건", total: "273건", years: "1986–2005", url: "https://ecoarchive.org/collections/show/id/27" },
+    { type: "person", name: "구도완", clue: "환경사회연구소 소장이자 한국환경사회학회 회장을 지내며, 환경운동사를 연구해 온 인물은?", subject: "반공해", n: "24건", total: "99건", years: "1978–2016", url: "https://ecoarchive.org/collections/show/id/22" },
+    { type: "person", name: "이상돈", clue: "20대 국회의원이자 중앙대 법과대학 명예교수로, 해양오염의 법적 문제를 박사학위 논문 주제로 연구한 인물은?", subject: "생태계보전", n: "8건", total: "13건", years: "2016–2020", url: "https://ecoarchive.org/collections/show/id/25" },
+    { type: "person", name: "김현구", clue: "생명과학을 공부하던 대학생으로, 오래 수집해 온 곤충기·식물도감 같은 고서적을 기증한 인물은?", subject: "생태계보전", n: "6건", total: "6건", years: "1948–1960", url: "https://ecoarchive.org/collections/show/id/23" },
+    { type: "person", name: "윤제용", clue: "서울대 공과대 교수로, 국경없는 과학기술자회 회장을 지낸 환경공학자는?", subject: "반공해", n: "3건", total: "5건", years: "2002–2009", url: "https://ecoarchive.org/collections/show/id/28" }
   ];
   var pool = orgs.concat(events).concat(people);
 
@@ -447,7 +448,8 @@
       : '대표 주제 ' + q.org.subject + ' (' + q.org.n + ') · 전체 소장자료 ' + q.org.total + ' · 기록 연도 ' + q.org.years;
     revealEl.innerHTML =
       '<span class="badge">' + iconSvg(q.org.subject, 16) + '</span>' +
-      '<span class="text"><b>' + q.org.name + '</b> · ' + statLine + '</span>';
+      '<span class="text"><b>' + q.org.name + '</b> · ' + statLine +
+      ' · <a href="' + q.org.url + '" target="_blank" rel="noopener">풀숲에서 기록 보기 ↗</a></span>';
     revealEl.classList.add("show");
     nextBtn.textContent = state.idx === ROUND - 1 ? "결과 보기" : "다음 문제";
     nextBtn.classList.add("show");
