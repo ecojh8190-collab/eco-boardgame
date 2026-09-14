@@ -2,6 +2,8 @@
 
 환경아카이브 풀숲의 실제 소장자료를 힌트로, 어느 단체 또는 어떤 역사적 사건에 대한 이야기인지 맞히는 웹 퀴즈 보드게임 프로토타입입니다.
 
+**🎮 바로 플레이하기: [ecojh8190-collab.github.io/eco-boardgame](https://ecojh8190-collab.github.io/eco-boardgame/)**
+
 ![대표 화면](docs/screenshot.png)
 
 ## 플레이 방법
@@ -20,13 +22,14 @@
 
 ## 실행 방법
 
-`prototype-v0.html` 파일을 브라우저로 열면 바로 플레이할 수 있습니다. 별도의 빌드나 서버가 필요 없습니다.
+위 링크로 바로 플레이하거나, `index.html`(또는 `prototype-v0.html`) 파일을 브라우저로 열면 로컬에서도 바로 플레이할 수 있습니다. 별도의 빌드나 서버가 필요 없습니다.
 
 ## 폴더 구조
 
 ```
 ecoboardgame/
-├─ prototype-v0.html   퀴즈 게임 본체 (HTML/CSS/JS 단일 파일)
-├─ docs/screenshot.png 대표 화면 스크린샷
-└─ uploads/            디자인 시안 참고 이미지 (비공개, .gitignore 처리)
+├─ index.html           GitHub Pages 배포용 (prototype-v0.html과 동일)
+├─ prototype-v0.html    퀴즈 게임 본체 (HTML/CSS/JS 단일 파일)
+├─ docs/screenshot.png  대표 화면 스크린샷
+└─ uploads/             디자인 시안 참고 이미지 (비공개, .gitignore 처리)
 ```
