@@ -1,0 +1,485 @@
+<title>이건 무슨 이야기일까</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;800;900&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+  :root {
+    --paper: #F1E8D2;
+    --card: #FBF6E9;
+    --ink: #1E3B2C;
+    --ink-soft: #5B7565;
+    --line: #1E3B2C;
+    --wrong: #B1432E;
+    --wrong-soft: #F1DDD4;
+    --good-soft: #E1E6D3;
+    --shadow: rgba(30,59,44,.16);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #142019; --card: #1C2C22; --ink: #F1E9D3; --ink-soft: #A9BBA9;
+      --line: #F1E9D3; --wrong: #E2836F; --wrong-soft: #3A241D; --good-soft: #2A3B26;
+      --shadow: rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #142019; --card: #1C2C22; --ink: #F1E9D3; --ink-soft: #A9BBA9;
+    --line: #F1E9D3; --wrong: #E2836F; --wrong-soft: #3A241D; --good-soft: #2A3B26;
+    --shadow: rgba(0,0,0,.45);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Noto Sans KR", sans-serif;
+    padding: 28px 16px 48px; display: flex; justify-content: center;
+  }
+  .app { width: 100%; max-width: 540px; }
+
+  /* ---------- header ---------- */
+  .stage { display: flex; align-items: flex-end; justify-content: center; gap: 14px; margin-bottom: 8px; }
+  .mascot { width: 92px; height: auto; flex: none; }
+  .cardstack { width: 70px; height: 84px; flex: none; }
+
+  .brandmark { width: 46px; height: 46px; flex: none; }
+  .brandmark text { font-family: "Jua", "Noto Sans KR", sans-serif; }
+
+  header { text-align: center; margin-bottom: 4px; }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace; font-size: 11.5px; letter-spacing: .1em;
+    color: var(--ink-soft); text-transform: uppercase;
+  }
+  h1 {
+    font-family: "Jua", "Noto Sans KR", sans-serif; font-weight: 400;
+    font-size: clamp(26px, 7vw, 34px); margin: 4px 0 8px; text-wrap: balance;
+  }
+  .lede {
+    color: var(--ink-soft); font-size: 14px; line-height: 1.6;
+    max-width: 42ch; margin: 0 auto;
+  }
+
+  .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 16px 0 0; }
+  .tagpill {
+    font-family: "Noto Sans KR", sans-serif; font-size: 11.5px; font-weight: 700;
+    color: var(--ink); border: 1.5px solid var(--line); border-radius: 999px;
+    padding: 4px 11px; opacity: .8;
+  }
+
+  /* ---------- hud ---------- */
+  .hud {
+    display: flex; align-items: center; justify-content: space-between;
+    margin: 22px 0 10px; gap: 10px; flex-wrap: wrap;
+  }
+  .score { display: flex; gap: 16px; }
+  .score .s { display: flex; flex-direction: column; }
+  .score .n {
+    font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums;
+    font-size: 19px; font-weight: 500;
+  }
+  .score .l { font-size: 10.5px; color: var(--ink-soft); }
+  .streak {
+    font-family: "Jua", sans-serif; font-size: 12.5px;
+    background: var(--ink); color: var(--paper);
+    padding: 5px 12px; border-radius: 999px;
+    opacity: 0; transform: scale(.9) rotate(-3deg); transition: opacity .2s, transform .2s;
+  }
+  .streak.show { opacity: 1; transform: scale(1) rotate(-3deg); }
+
+  .dots { display: flex; gap: 7px; margin-bottom: 18px; }
+  .dot { width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid var(--line); background: transparent; }
+  .dot.cur { background: var(--ink); }
+  .dot.ans { background: var(--ink); }
+  .dot.wrong-ans { background: transparent; border-style: dashed; opacity: .6; }
+
+  /* ---------- question card ---------- */
+  .cardwrap { position: relative; }
+  .cardwrap::before, .cardwrap::after {
+    content: ""; position: absolute; inset: 0; background: var(--card);
+    border: 2px solid var(--line); border-radius: 20px; z-index: 0;
+  }
+  .cardwrap::before { transform: rotate(-4deg) translateY(2px); }
+  .cardwrap::after { transform: rotate(3deg) translateY(2px); }
+
+  .qcard {
+    position: relative; z-index: 1;
+    background: var(--card); border: 2.5px solid var(--line); border-radius: 20px;
+    padding: 18px 18px 20px; box-shadow: 0 10px 22px var(--shadow);
+  }
+  .cardtop { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+  .cardtop .brandmark { width: 38px; height: 38px; }
+  .tag {
+    font-family: "Jua", sans-serif; font-size: 12px; color: var(--ink);
+    border: 1.5px solid var(--line); border-radius: 8px; padding: 5px 9px;
+    text-align: center; line-height: 1.2; max-width: 120px;
+  }
+
+  .inner {
+    border: 1.5px dashed var(--line); border-radius: 14px; padding: 16px 14px; opacity: .97;
+  }
+  .kind {
+    font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: .08em;
+    color: var(--ink-soft); text-transform: uppercase; margin-bottom: 8px;
+  }
+  .clue {
+    font-family: "Noto Sans KR", sans-serif; font-weight: 800; font-size: 17px;
+    line-height: 1.5; text-wrap: balance;
+  }
+
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  .opt {
+    font: inherit; font-family: "Noto Sans KR", sans-serif; font-size: 13.5px; font-weight: 700;
+    text-align: left; background: var(--card); color: var(--ink);
+    border: 1.8px solid var(--line); border-radius: 12px;
+    padding: 11px 12px; cursor: pointer; line-height: 1.35;
+  }
+  .opt:hover:not(:disabled) { background: var(--ink); color: var(--card); }
+  .opt:disabled { cursor: default; }
+  .opt.correct { background: var(--good-soft); border-color: var(--ink); }
+  .opt.wrong { background: var(--wrong-soft); border-color: var(--wrong); color: var(--wrong); }
+
+  .reveal {
+    margin-top: 14px; padding: 12px 13px; border-radius: 12px;
+    background: var(--paper); border: 1.5px solid var(--line);
+    display: none; align-items: flex-start; gap: 10px;
+  }
+  .reveal.show { display: flex; }
+  .reveal .badge {
+    width: 28px; height: 28px; border-radius: 50%; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--card); border: 1.5px solid var(--line); color: var(--ink);
+  }
+  .reveal .badge svg { width: 16px; height: 16px; }
+  .reveal .text { font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); }
+  .reveal .text b { color: var(--ink); font-size: 13.5px; font-family: "Jua", sans-serif; font-weight: 400; }
+
+  .next {
+    margin-top: 14px; width: 100%; font-family: "Jua", sans-serif; font-size: 15px;
+    background: var(--ink); color: var(--card); border: none; border-radius: 12px;
+    padding: 13px; cursor: pointer; display: none;
+  }
+  .next.show { display: block; }
+
+  /* ---------- end screen ---------- */
+  .end {
+    position: relative; z-index: 1;
+    background: var(--card); border: 2.5px solid var(--line); border-radius: 20px;
+    padding: 26px 20px; text-align: center; box-shadow: 0 10px 22px var(--shadow); display: none;
+  }
+  .end.show { display: block; }
+  .end .mascot { width: 78px; margin: 0 auto 8px; }
+  .end .big {
+    font-family: "Jua", sans-serif; font-size: 36px; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .end .cap { color: var(--ink-soft); font-size: 13px; margin-top: 6px; }
+  .end .breakdown { display: flex; justify-content: center; gap: 24px; margin-top: 18px; }
+  .end .breakdown .s .n { font-family:"IBM Plex Mono",monospace; font-size:18px; font-variant-numeric: tabular-nums; }
+  .end .breakdown .s .l { font-size: 11px; color: var(--ink-soft); }
+  .retry {
+    margin-top: 20px; font-family: "Jua", sans-serif; font-size: 14.5px;
+    background: var(--ink); color: var(--card); border: none; border-radius: 12px;
+    padding: 12px 22px; cursor: pointer;
+  }
+
+  footer { margin-top: 26px; font-size: 12px; color: var(--ink-soft); line-height: 1.6; text-align: center; }
+  footer a { color: var(--ink); }
+  code { font-family: "IBM Plex Mono", monospace; }
+</style>
+
+<div class="app">
+  <div class="stage">
+    <svg class="cardstack" viewBox="0 0 70 84" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="6" y="10" width="46" height="64" rx="9" fill="var(--card)" stroke="var(--line)" stroke-width="2" transform="rotate(-8 29 42)"/>
+      <rect x="16" y="8" width="46" height="64" rx="9" fill="var(--card)" stroke="var(--line)" stroke-width="2" transform="rotate(7 39 40)"/>
+    </svg>
+    <svg class="mascot" viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" aria-label="마스코트 잎사귀 캐릭터">
+      <path d="M60 14q-3 -12 5 -16" fill="none" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>
+      <path d="M60 14C90 14 100 46 92 72C85 96 64 116 40 112C16 108 8 82 14 58C20 34 34 14 60 14Z" fill="var(--card)" stroke="var(--line)" stroke-width="3.5"/>
+      <path d="M58 20C50 48 50 84 46 108" fill="none" stroke="var(--line)" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="38" cy="68" r="6" fill="var(--line)" opacity=".12"/>
+      <circle cx="80" cy="64" r="6" fill="var(--line)" opacity=".12"/>
+      <circle cx="46" cy="58" r="4.2" fill="var(--line)"/>
+      <circle cx="70" cy="54" r="4.2" fill="var(--line)"/>
+      <path d="M48 74Q60 86 74 70" fill="none" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <header>
+    <div class="eyebrow">환경아카이브 풀숲 · 프로토타입 v0.4</div>
+    <h1>이건 무슨 이야기일까</h1>
+    <p class="lede">실제 소장자료 속 단체와 역사적 사건을 힌트로, 무엇에 대한 이야기인지 맞혀 보세요.<br>8문제, 정답을 맞힐수록 연속 보너스가 붙습니다.</p>
+  </header>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="hud">
+    <div class="score">
+      <div class="s"><span class="n" id="scoreN">0</span><span class="l">점수</span></div>
+      <div class="s"><span class="n" id="qN">1 / 8</span><span class="l">문제</span></div>
+    </div>
+    <div class="streak" id="streak">연속 정답 ×0</div>
+  </div>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="cardwrap">
+    <div class="qcard" id="qcard">
+      <div class="cardtop">
+        <svg class="brandmark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><path id="circlePath" d="M32,6 A26,26 0 1,1 31.9,6" fill="none"/></defs>
+          <circle cx="32" cy="32" r="29" fill="none" stroke="var(--line)" stroke-width="2"/>
+          <path d="M32 21c7 0 11 6 9.5 12.5-1.5 5.5-7 9-14.5 8-6-1-9-6.5-7.5-12.5 1.5-5.5 6-8 12.5-8z" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+          <text font-size="6.6" letter-spacing="1.6" fill="var(--line)">
+            <textPath href="#circlePath" startOffset="1">ECO ARCHIVE · ECO ARCHIVE ·</textPath>
+          </text>
+        </svg>
+        <div class="tag" id="tagLabel">주제</div>
+      </div>
+      <div class="inner">
+        <div class="kind" id="kindLabel">기록 속 단서</div>
+        <div class="clue" id="clueText"></div>
+        <div class="options" id="options"></div>
+        <div class="reveal" id="reveal"></div>
+        <button class="next" id="next">다음 문제</button>
+      </div>
+    </div>
+
+    <div class="end" id="end">
+      <svg class="mascot" viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M60 14q-3 -12 5 -16" fill="none" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M60 14C90 14 100 46 92 72C85 96 64 116 40 112C16 108 8 82 14 58C20 34 34 14 60 14Z" fill="var(--card)" stroke="var(--line)" stroke-width="3.5"/>
+        <path d="M58 20C50 48 50 84 46 108" fill="none" stroke="var(--line)" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="38" cy="68" r="6" fill="var(--line)" opacity=".12"/>
+        <circle cx="80" cy="64" r="6" fill="var(--line)" opacity=".12"/>
+        <path d="M41 56q5 -7 9 0" fill="none" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M65 52q5 -7 9 0" fill="none" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>
+        <ellipse cx="59" cy="80" rx="10" ry="7" fill="var(--line)"/>
+        <path d="M14 30l3 4M18 24l-2 5M100 30l-3 4M96 24l2 5" stroke="var(--line)" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <div class="big" id="endScore">0점</div>
+      <div class="cap" id="endCap"></div>
+      <div class="breakdown">
+        <div class="s"><span class="n" id="endCorrect">0/8</span><span class="l">정답 수</span></div>
+        <div class="s"><span class="n" id="endBest">0</span><span class="l">최고 연속</span></div>
+      </div>
+      <button class="retry" id="retry">다른 8문제로 다시 도전</button>
+    </div>
+  </div>
+
+  <footer>
+    출처: <a href="https://github.com/ArchivelabEdu/ecoarchive-impact2026" target="_blank" rel="noopener">ecoarchive-impact2026</a>
+    (환경아카이브 풀숲 임팩트 측정 데이터, 2026-09-10 기준 스냅샷). 단서는 단체 소개글과 사건 설명을 각색한 것이며,
+    실제 원문은 저장소의 <code>data/holdings/collections.json</code>과 <code>timeline.json</code>에서 볼 수 있습니다.
+  </footer>
+</div>
+
+<script>
+(function () {
+  // 실제 collections.json에서 추출한 단체 정보 (이름을 직접 언급하지 않도록 각색한 단서 포함)
+  var orgs = [
+    { type: "org", name: "환경운동연합", clue: "1987년 6월 항쟁 이후 힘을 얻은 지역 공해추방운동 조직들이 1993년 전국 8개 단체로 통합해 만든, 국내 최대 규모의 전국 단위 환경단체는?", subject: "반핵탈핵", n: "3,861건", total: "18,204건", years: "1955–2024" },
+    { type: "org", name: "녹색연합", clue: "1991년 창립해 백두대간과 DMZ 보전, 야생동물 서식지 보호에 주력해 온 환경단체는?", subject: "생태계보전", n: "2,667건", total: "10,374건", years: "1971–2024" },
+    { type: "org", name: "한겨레", clue: "1988년 창간 초기부터 환경 문제를 주요 의제로 다뤄 왔고, 2020년 국내 언론 최초로 '기후변화팀'을 신설한 곳은?", subject: "반공해", n: "994건", total: "9,464건", years: "1988–1999" },
+    { type: "org", name: "생명의숲", clue: "1998년 '숲 가꾸기 운동'으로 시작해 도시숲·학교숲 운동으로 활동 영역을 넓혀 온 단체는?", subject: "생태계보전", n: "4,995건", total: "7,070건", years: "1966–2024" },
+    { type: "org", name: "녹색교통", clue: "1992년 운수노동활동가들이 꾸린 '교통환경연구소'가 뿌리이며, 시민의 교통권과 대기오염 문제를 함께 다루는 단체는?", subject: "일반", n: "1,591건", total: "6,945건", years: "1967–2023" },
+    { type: "org", name: "생태보전시민모임", clue: "'공생·다양성·연대·참여'를 핵심가치로 1998년 창립해 도시생태계 보전과 생태교육 활동을 해 온 단체는?", subject: "생태계보전", n: "3,223건", total: "5,473건", years: "1971–2023" },
+    { type: "org", name: "국립공원을지키는시민의모임", clue: "국립공원의 자연생태계와 경관을 지키기 위해 자연공원법 개정운동을 벌여 온 단체는?", subject: "생태계보전", n: "2,465건", total: "4,062건", years: "1963–2022" },
+    { type: "org", name: "여성환경연대", clue: "1999년 창립한 국내 유일의 여성환경운동 단체로, 여성건강·에코젠더 같은 주제로 활동하는 곳은?", subject: "생활안전", n: "539건", total: "2,804건", years: "1993–2024" },
+    { type: "org", name: "불교환경연대", clue: "생명존중의 가르침을 바탕으로 2001년 창립해 자연환경과 생명살림을 위한 활동을 펼쳐 온 단체는?", subject: "생태계보전", n: "1,233건", total: "2,793건", years: "1999–2023" },
+    { type: "org", name: "더나은미래", clue: "언론사의 공익섹션에서 출발해 2010년 설립된, 공익 저널리즘과 컨설팅을 함께 하는 단체는?", subject: "기후에너지", n: "462건", total: "2,744건", years: "2010–2023" },
+    { type: "org", name: "숲과나눔", clue: "'환경아카이브 풀숲'을 직접 구축하고 운영해 온, 2018년 설립된 재단은?", subject: "기후에너지", n: "444건", total: "2,522건", years: "2018–2025" },
+    { type: "org", name: "기독교환경운동연대", clue: "1982년 '한국공해문제연구소'로 출발했다가, 1997년 기독교 신앙을 바탕으로 조직을 개편한 단체는?", subject: "반핵탈핵", n: "228건", total: "3,824건", years: "1982–2023" },
+    { type: "org", name: "환경정의", clue: "1992년 리우 유엔환경회의를 계기로 경실련 산하 기구로 출발했다가, 2004년 지금의 이름으로 바꾼 단체는?", subject: "생활안전", n: "286건", total: "3,217건", years: "1966–2023" },
+    { type: "org", name: "수원환경운동센터", clue: "1994년, 수원 지역 시민·사회단체들의 연대로 결성되어 지역 환경문제 해결에 집중해 온 단체는?", subject: "생태계보전", n: "551건", total: "1,631건", years: "1988–2020" }
+  ];
+
+  // 실제 timeline.json 사건(events) 47건 중 12건 — 설명을 각색한 단서 포함
+  var events = [
+    { type: "event", name: "낙동강 페놀 유출 사건", clue: "1991년, 구미의 한 공장에서 두 차례에 걸쳐 유해물질이 낙동강으로 흘러들어 대구 지역 수돗물에서 악취가 났던 사건은?", subject: "반공해", year: "1991년", n: "65건", org: "한겨레" },
+    { type: "event", name: "새만금 간척사업 백지화", clue: "1987년 대선 공약으로 시작돼, 여의도 면적의 140배에 달하는 서해 갯벌을 매립하려 한 간척사업을 둘러싼 오랜 논쟁은?", subject: "생태계보전", year: "1987년~", n: "1,148건", org: "불교환경연대" },
+    { type: "event", name: "4대강반대", clue: "2008년 대선 공약이던 한반도 대운하 구상이 2009년 녹색뉴딜 사업으로 다시 등장하며, 전국 주요 하천 공사를 둘러싸고 벌어진 논쟁은?", subject: "생태계보전", year: "2006년~", n: "984건", org: "환경운동연합" },
+    { type: "event", name: "후쿠시마 핵발전소 폭발 사고", clue: "2011년 3월 동일본 대지진 쓰나미로 발생해, 체르노빌과 함께 국제원자력사고등급 최고 단계를 기록한 사고는?", subject: "반핵탈핵", year: "2011년", n: "359건", org: "환경운동연합" },
+    { type: "event", name: "가습기살균제 참사", clue: "2011년, 원인 모를 폐질환으로 임산부들이 잇달아 입원하며 드러난, 실내 공기용 제품으로 인한 대규모 건강 피해 사건은?", subject: "생활안전", year: "2011년~", n: "145건", org: "환경운동연합" },
+    { type: "event", name: "밀양송전탑반대", clue: "신고리 핵발전소 전력을 수도권으로 보내는 초고압 송전선로 건설에 맞서, 주민들이 공사현장에 농성장을 짓고 몸으로 막아선 사건은?", subject: "기후에너지", year: "2005–2014", n: "70건", org: "환경운동연합" },
+    { type: "event", name: "시화호 수질오염 대응", clue: "1994년 완공된 방조제 이후, 최첨단 기술로 수질을 개선하겠다던 정부 장담과 달리 주변 산업단지로 오염이 갈수록 심해진 사건은?", subject: "생태계보전", year: "1993–2001", n: "60건", org: "한겨레" },
+    { type: "event", name: "천성산 터널공사 반대", clue: "경부고속철도 터널 구간을 두고, 일대 12개 사찰 승려들이 수행환경 저해와 자연 파괴 문제를 제기하며 벌어진 논쟁은?", subject: "생태계보전", year: "2000–2006", n: "145건", org: "불교환경연대" },
+    { type: "event", name: "미국산 광우병 쇠고기 수입 반대", clue: "2008년, 뼈 있는 부위까지 수입을 허용하는 한미 협상 타결 소식에 국민 여론이 들끓으며 대규모 집회로 번진 사건은?", subject: "생활안전", year: "2008년", n: "59건", org: "환경정의" },
+    { type: "event", name: "매향리미군사격장폐쇄", clue: "54년간 한 마을 상공에서 하루 수백 회 사격훈련이 계속되며, 주민들이 소음 피해와 오폭 사고를 겪었던 미군 훈련장을 둘러싼 사건은?", subject: "생태계보전", year: "1988–2015", n: "178건", org: "녹색연합" },
+    { type: "event", name: "굴업도핵폐기장반대", clue: "1994년 언론 보도로 알려진, 서해의 한 섬에 핵폐기장을 건설하려던 정부 계획을 둘러싼 논쟁은?", subject: "반핵탈핵", year: "1994–1995", n: "129건", org: "환경운동연합" },
+    { type: "event", name: "고리1호기 폐쇄", clue: "1978년 가동을 시작한 국내에서 가장 오래된 핵발전소가 2007년 수명연장되며 불거진, 운동의 이름은?", subject: "반핵탈핵", year: "2007–2017", n: "147건", org: "환경운동연합" }
+  ];
+  var pool = orgs.concat(events);
+
+  // 주제(subject) 8종 → 아이콘 (단색 잉크 톤, 카드 뒷면 스탬프 느낌)
+  var subjectIcon = {
+    "반핵탈핵":   '<circle cx="12" cy="12" r="8.3"/><circle cx="12" cy="12" r="2"/><path d="M12 3.7v4" transform="rotate(0 12 12)"/><path d="M12 3.7v4" transform="rotate(120 12 12)"/><path d="M12 3.7v4" transform="rotate(240 12 12)"/>',
+    "생태계보전": '<path d="M5 19c7-1 12-6 13-13-8 0-13 5-13 13z"/><path d="M5 19c2-4 5-7 9-9"/>',
+    "반공해":     '<rect x="4" y="12" width="16" height="8" rx="1"/><path d="M8 12V8h3v4"/><circle cx="15.5" cy="6" r="1.3"/><circle cx="18" cy="4" r=".9"/>',
+    "기후에너지": '<circle cx="12" cy="12" r="4"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6.1 6.1l1.4 1.4M16.5 16.5l1.4 1.4M6.1 17.9l1.4-1.4M16.5 7.5l1.4-1.4"/>',
+    "생활안전":   '<path d="M12 3.2l7 2.8v5.6c0 4.4-3 7.4-7 8.6-4-1.2-7-4.2-7-8.6V6l7-2.8z"/><path d="M9 12l2 2 4-4"/>',
+    "국제연대":   '<circle cx="12" cy="12" r="8.3"/><path d="M3.7 12h16.6M12 3.7c2.6 2.3 3.9 5.1 3.9 8.3s-1.3 6-3.9 8.3c-2.6-2.3-3.9-5.1-3.9-8.3s1.3-6 3.9-8.3z"/>',
+    "일반":       '<path d="M4 6.5h5.4l1.8 1.8H20V18H4z"/>',
+    "대기오염":   '<path d="M7.2 16.8a3.8 3.8 0 0 1 .3-7.6 4.8 4.8 0 0 1 9-1.6A4.3 4.3 0 0 1 16.6 16.8z"/><circle cx="9" cy="20" r=".85"/><circle cx="12.5" cy="20" r=".85"/><circle cx="16" cy="20" r=".85"/>'
+  };
+  function iconSvg(subject, size) {
+    return '<svg viewBox="0 0 24 24" width="' + size + '" height="' + size +
+      '" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
+      subjectIcon[subject] + '</svg>';
+  }
+
+  var ROUND = 8;
+  var scoreN = document.getElementById("scoreN");
+  var qN = document.getElementById("qN");
+  var streakEl = document.getElementById("streak");
+  var dotsEl = document.getElementById("dots");
+  var qcard = document.getElementById("qcard");
+  var tagLabel = document.getElementById("tagLabel");
+  var kindLabel = document.getElementById("kindLabel");
+  var clueText = document.getElementById("clueText");
+  var optionsEl = document.getElementById("options");
+  var revealEl = document.getElementById("reveal");
+  var nextBtn = document.getElementById("next");
+  var endEl = document.getElementById("end");
+  var endScore = document.getElementById("endScore");
+  var endCap = document.getElementById("endCap");
+  var endCorrect = document.getElementById("endCorrect");
+  var endBest = document.getElementById("endBest");
+
+  var state;
+
+  function shuffle(arr) {
+    arr = arr.slice();
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  function buildRound() {
+    var picked = shuffle(pool).slice(0, ROUND);
+    return picked.map(function (item) {
+      var sameType = pool.filter(function (o) { return o.type === item.type && o.name !== item.name; });
+      var distractors = shuffle(sameType).slice(0, 3);
+      var choices = shuffle([item.name].concat(distractors.map(function (d) { return d.name; })));
+      return { org: item, choices: choices };
+    });
+  }
+
+  function renderDots() {
+    dotsEl.innerHTML = "";
+    for (var i = 0; i < ROUND; i++) {
+      var d = document.createElement("div");
+      d.className = "dot" + (i === state.idx ? " cur" : "");
+      if (i < state.idx && state.answers[i]) {
+        d.classList.add(state.answers[i].correct ? "ans" : "wrong-ans");
+      }
+      dotsEl.appendChild(d);
+    }
+  }
+
+  function renderLegend() {
+    var legendEl = document.getElementById("legend");
+    legendEl.innerHTML = Object.keys(subjectIcon).map(function (key) {
+      return '<span class="tagpill">' + key + '</span>';
+    }).join("");
+  }
+
+  function renderQuestion() {
+    revealEl.classList.remove("show");
+    nextBtn.classList.remove("show");
+    var q = state.round[state.idx];
+    clueText.textContent = q.org.clue;
+    qN.textContent = (state.idx + 1) + " / " + ROUND;
+    tagLabel.textContent = q.org.subject;
+    kindLabel.textContent = q.org.type === "event" ? "역사 속 단서 · 어떤 사건일까" : "기록 속 단서 · 어느 단체일까";
+    renderDots();
+    optionsEl.innerHTML = "";
+    q.choices.forEach(function (name) {
+      var b = document.createElement("button");
+      b.className = "opt";
+      b.textContent = name;
+      b.addEventListener("click", function () { onAnswer(name, b); });
+      optionsEl.appendChild(b);
+    });
+  }
+
+  function onAnswer(chosen, btnEl) {
+    var q = state.round[state.idx];
+    var correct = chosen === q.org.name;
+    var buttons = optionsEl.querySelectorAll(".opt");
+    buttons.forEach(function (b) {
+      b.disabled = true;
+      if (b.textContent === q.org.name) b.classList.add("correct");
+      else if (b === btnEl) b.classList.add("wrong");
+    });
+
+    if (correct) {
+      state.streak++;
+      state.best = Math.max(state.best, state.streak);
+      var bonus = state.streak > 1 ? (state.streak - 1) * 20 : 0;
+      state.score += 100 + bonus;
+      state.correctCount++;
+      streakEl.textContent = "연속 정답 ×" + state.streak + (bonus ? " (+" + bonus + ")" : "");
+      streakEl.classList.toggle("show", state.streak > 1);
+    } else {
+      state.streak = 0;
+      streakEl.classList.remove("show");
+    }
+    scoreN.textContent = state.score;
+    state.answers[state.idx] = { subj: q.org.subject, correct: correct };
+    renderDots();
+
+    var statLine = q.org.type === "event"
+      ? '일어난 시기 ' + q.org.year + ' · 관련 기록 ' + q.org.n + ' · 가장 많이 소장한 곳 ' + q.org.org
+      : '대표 주제 ' + q.org.subject + ' (' + q.org.n + ') · 전체 소장자료 ' + q.org.total + ' · 기록 연도 ' + q.org.years;
+    revealEl.innerHTML =
+      '<span class="badge">' + iconSvg(q.org.subject, 16) + '</span>' +
+      '<span class="text"><b>' + q.org.name + '</b> · ' + statLine + '</span>';
+    revealEl.classList.add("show");
+    nextBtn.textContent = state.idx === ROUND - 1 ? "결과 보기" : "다음 문제";
+    nextBtn.classList.add("show");
+  }
+
+  function onNext() {
+    state.idx++;
+    if (state.idx >= ROUND) {
+      finish();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function finish() {
+    qcard.style.display = "none";
+    dotsEl.style.display = "none";
+    endEl.classList.add("show");
+    endScore.textContent = state.score + "점";
+    endCorrect.textContent = state.correctCount + "/" + ROUND;
+    endBest.textContent = "×" + state.best;
+    var acc = Math.round((state.correctCount / ROUND) * 100);
+    var cap = acc === 100 ? "8문제 모두 맞혔습니다. 환경운동 아카이브 박사네요."
+      : acc >= 62 ? "꽤 잘 아시네요. 조금만 더 보면 만점도 노려볼 만해요."
+      : "낯선 이름이 많았다면, 각 단체 소개를 다시 훑어보는 것도 좋겠어요.";
+    endCap.textContent = cap;
+  }
+
+  function reset() {
+    state = { round: buildRound(), idx: 0, score: 0, streak: 0, best: 0, correctCount: 0, answers: [] };
+    qcard.style.display = "";
+    dotsEl.style.display = "";
+    endEl.classList.remove("show");
+    streakEl.classList.remove("show");
+    scoreN.textContent = "0";
+    renderQuestion();
+  }
+
+  nextBtn.addEventListener("click", onNext);
+  document.getElementById("retry").addEventListener("click", reset);
+
+  function boot() { renderLegend(); reset(); }
+  if (window.claude && window.claude.hot) {
+    window.claude.hot.ready ? window.claude.hot.ready(boot) : boot();
+  } else {
+    boot();
+  }
+})();
+</script>
